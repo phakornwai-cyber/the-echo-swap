@@ -1,6 +1,5 @@
-
 /**
- * THE ECHO SWAP PROTOCOL: MULTI-CHAIN GAUNTLET (GAP BALANCED)
+ * THE ECHO SWAP PROTOCOL: STREAMLINED RUNWAY GATES
  * Controls:
  * - Left/Right Arrows: Move
  * - A Button (Space Bar): Jump 
@@ -56,7 +55,7 @@ player.ay = 350
 controller.moveSprite(player, 85, 0)
 scene.cameraFollowSprite(player)
 
-// --- 3. LEVEL DESIGN (GEOMETRY BALANCED) ---
+// --- 3. HARD-LOCKED RUNWAY DESIGN ---
 let platforms: Sprite[] = []
 
 function buildFloor(x: number, y: number, w: number, h: number, color: number) {
@@ -90,62 +89,59 @@ buildFloor(60, 95, 120, 20, 11)
 buildFloor(190, 115, 80, 20, 14)
 spawnCoin(190, 95)
 
-// === ACT 2: SHŌ (THE MID-AIR CHAIN SWAP VOID - CALIBRATED) ===
-buildFloor(270, 115, 40, 20, 14)  // Start cliff
-buildSpikes(380, 120, 180, 10)     // Pit scaled down slightly to prevent physics engine failure
+// === ACT 2: SHŌ (THE MID-AIR CHAIN SWAP VOID) ===
+buildFloor(270, 115, 40, 20, 14)
+buildSpikes(380, 120, 180, 10)
 
-// Anchor platform widened from 12px to 24px for cleaner landing space
 buildFloor(355, 95, 24, 12, 5)
 spawnCoin(355, 75)
 
-buildFloor(460, 115, 50, 20, 14)  // Far-side cliff brought closer (from 490 down to 460)
+buildFloor(460, 115, 50, 20, 14)
 
-// === ACT 3: TEN (THE DOUBLE-GATE TERMINAL PUZZLE) ===
-buildFloor(580, 90, 130, 15, 11)   // Central Secure Deck (Adjusted for new Act 2 layout)
+// === ACT 3: TEN (THE GATE RUNWAY DECK & PITS) ===
+buildFloor(510, 90, 40, 15, 11)   // Before Pit 1
+buildFloor(580, 90, 40, 15, 11)   // Between Pit 1 and Pit 2
+buildFloor(650, 90, 40, 15, 11)   // After Pit 2
 
-// Deep Pit Switch #1 (Left Side Challenge)
-buildFloor(540, 145, 30, 15, 12)
+// --- DEEP INESCAPABLE PIT 1 (LEFT SWITCH) ---
+buildFloor(535, 120, 10, 60, 12)
+buildFloor(555, 145, 30, 15, 12)
 floorSwitch1 = sprites.create(img`
     . . 4 4 4 4 . .
     . 4 5 5 5 5 4 .
     4 5 2 2 2 2 5 4
 `, SpriteKind.Switch)
-floorSwitch1.setPosition(540, 137)
+floorSwitch1.setPosition(555, 137)
 
-// Deep Pit Switch #2 (Right Side Challenge)
-buildFloor(645, 145, 30, 15, 12)
+// --- DEEP INESCAPABLE PIT 2 (RIGHT SWITCH) ---
+buildFloor(625, 145, 30, 15, 12)
+buildFloor(645, 120, 10, 60, 12)
 floorSwitch2 = sprites.create(img`
     . . 4 4 4 4 . .
     . 4 5 5 5 5 4 .
     4 5 4 4 4 4 5 4
 `, SpriteKind.SwitchTwo)
-floorSwitch2.setPosition(645, 137)
+floorSwitch2.setPosition(625, 137)
 
-// Security Laser Barrier #1 (Red Gate)
-laserGate1 = sprites.create(img`
-    2 2 2 2
-    . 2 2 .
-    2 2 2 2
-`, SpriteKind.Gate)
-laserGate1.setPosition(600, 77)
 
-// Security Laser Barrier #2 (Orange Gate)
-laserGate2 = sprites.create(img`
-    4 4 4 4
-    . 4 4 .
-    4 4 4 4
-`, SpriteKind.GateTwo)
-laserGate2.setPosition(620, 77)
+// --- TALL SKY BARRIER TOWERS ---
+// Gate 1 (Red Barrier)
+laserGate1 = sprites.create(image.create(6, 120), SpriteKind.Gate)
+laserGate1.image.fill(2)
+laserGate1.setPosition(570, 22)
 
-// === ACT 4: KETSU (THE VERTIGO ASCENT WALL - FIXED JUMP GAP) ===
-buildFloor(745, 85, 120, 20, 11)  // Brought closer and set at optimal jump height 
+// Gate 2 (Orange Barrier)
+laserGate2 = sprites.create(image.create(6, 120), SpriteKind.GateTwo)
+laserGate2.image.fill(4)
+laserGate2.setPosition(615, 22)
 
-// Advanced Vertical Coin Trailing
-spawnCoin(685, 65)
-spawnCoin(705, 50)
-spawnCoin(725, 35)
 
-// Quantum Goal Extraction Flag
+// === ACT 4: KETSU (THE RUNWAY EXTENSION) ===
+buildFloor(755, 85, 100, 20, 11)
+
+spawnCoin(700, 65)
+spawnCoin(720, 50)
+
 let levelGoal = sprites.create(img`
     . 5 5 5 5 5 . .
     . 5 5 5 5 5 5 .
@@ -186,7 +182,7 @@ game.onUpdate(function () {
         jumpGrace--
     }
 
-    // Solid Boundaries for Laser Gate 1
+    // Strict Solid Stop: Gate 1 Solid Barrier Collision
     if (!isGateOneOpen && player.overlapsWith(laserGate1)) {
         player.vy = 0
         if (player.x < laserGate1.x) {
@@ -196,7 +192,7 @@ game.onUpdate(function () {
         }
     }
 
-    // Solid Boundaries for Laser Gate 2
+    // Strict Solid Stop: Gate 2 Solid Barrier Collision
     if (!isGateTwoOpen && player.overlapsWith(laserGate2)) {
         player.vy = 0
         if (player.x < laserGate2.x) {
@@ -269,7 +265,7 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
         player.sayText("SWAPPED!", 600)
         music.playTone(659, 120)
 
-        pause(200) // Fast reset window for quick chain swaps
+        pause(200)
         isEchoActive = false
     }
 })
@@ -277,14 +273,12 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
 
 // --- 6. OVERLAP LOGIC ---
 
-// Collecting Coins
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Coin, function (sprite, otherSprite) {
     otherSprite.destroy(effects.confetti, 200)
     info.changeScoreBy(1)
     music.playTone(880, 100)
 })
 
-// Activating Red Switch #1
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Switch, function (sprite, otherSprite) {
     if (!isGateOneOpen) {
         isGateOneOpen = true
@@ -295,11 +289,10 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Switch, function (sprite, otherS
             7 2 7 7 7 7 2 7
         `)
         laserGate1.destroy(effects.disintegrate, 300)
-        player.sayText("GATE 1 COMPROMISED", 600)
+        player.sayText("GATE 1 DESYNCED", 600)
     }
 })
 
-// Activating Orange Switch #2
 sprites.onOverlap(SpriteKind.Player, SpriteKind.SwitchTwo, function (sprite, otherSprite) {
     if (!isGateTwoOpen) {
         isGateTwoOpen = true
@@ -310,17 +303,15 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.SwitchTwo, function (sprite, oth
             7 4 7 7 7 7 4 7
         `)
         laserGate2.destroy(effects.disintegrate, 300)
-        player.sayText("DECK SECURE!", 600)
+        player.sayText("GATE 2 DESYNCED", 600)
     }
 })
 
-// Hazard Interaction
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Hazard, function (sprite, otherSprite) {
     sprite.destroy(effects.disintegrate, 200)
     game.over(false, effects.melt)
 })
 
-// Extraction Goal Achievement
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Goal, function (sprite, otherSprite) {
     game.over(true, effects.confetti)
 })
